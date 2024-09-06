@@ -10,7 +10,11 @@ const scheduleSchema = new Schema({
     description: {
         type: String,
         required: true
-    }
+    },
+    date: {
+        type: Date,
+        require: true
+    } 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Schedule', scheduleSchema, 'schedules');

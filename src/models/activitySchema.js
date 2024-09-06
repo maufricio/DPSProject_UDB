@@ -18,6 +18,6 @@ const activitySchema = new Schema({
         type: Boolean,
         required: true
     }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Activity', activitySchema, 'activities');
