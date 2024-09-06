@@ -18,6 +18,6 @@ const userSchema = new Schema({
         type: Boolean,
         required: true
     }
-});
+},{ timestamps: true });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema, 'users');

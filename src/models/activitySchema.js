@@ -14,10 +14,10 @@ const activitySchema = new Schema({
         type: Date,
         required: true
     },
-    state: {
+    status: {
         type: Boolean,
         required: true
     }
 });
 
-module.exports = mongoose.model('Activity', activitySchema);
+module.exports = mongoose.model('Activity', activitySchema, 'activities');

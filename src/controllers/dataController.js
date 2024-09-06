@@ -1,4 +1,6 @@
 const Data = require('../models/data');
+const DataUsers = require('../models/userSchema');
+const DataSchedules = require('../models/scheduleSchema');
 
 //list all items
 exports.list = async (req, res) => {
@@ -131,3 +133,173 @@ exports.delete = async (req, res, next) => {
         next();
     }
 };
+
+//Controladores para usuarios
+
+//buscar todos los usuarios
+exports.listusers = async (req, res) => {
+    try {
+        const data = await DataUsers.find({});
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+        res.status(200).send(error);
+        next();
+    }
+};
+
+//añadir usuario
+exports.adduser = async (req, res) => {
+    const { name, email, password, status } = req.body;
+
+    const data = new DataUsers({
+        name: name || 0,
+        email: email || 0,
+        password: password || 0,
+        status: status || 0
+    })
+
+    try {
+        await data.save();
+        res.json({ message: "Added new message", data: data });
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+        next();
+    }
+}
+
+//actualizar usuario
+exports.updateuser = async (req, res, next) => {
+    try {
+        const data = await DataUsers.findOneAndUpdate(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "user not found" })
+        }
+        res.json({ message: "user updated", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+//eliminar usuario
+exports.deleteuser = async (req, res, next) => {
+    try {
+        const data = await DataUsers.findOneAndDelete(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "user not found" })
+        }
+        res.json({ message: "user deleted", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+//controladores para horarios
+
+//buscar todos los horarios
+exports.listshedules = async (req, res) => {
+    try {
+        const data = await DataSchedules.find({});
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+        res.status(200).send(error);
+        next();
+    }
+};
+
+//añadir horario
+exports.addschedule = async (req, res) => {
+    const { name, description } = req.body;
+
+    const data = new DataSchedules({
+        name: name || 0,
+        description: description || 0
+    })
+
+    try {
+        await data.save();
+        res.json({ message: "Added new message", data: data });
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+        next();
+    }
+}
+
+//actualizar horario
+exports.updateschedule = async (req, res, next) => {
+    try {
+        const data = await DataSchedules.findOneAndUpdate(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "schedule not found" })
+        }
+        res.json({ message: "schedule updated", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+//eliminar horario
+exports.deleteschedule = async (req, res, next) => {
+    try {
+        const data = await DataSchedules.findOneAndDelete(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "shedule not found" })
+        }
+        res.json({ message: "schedule deleted", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+

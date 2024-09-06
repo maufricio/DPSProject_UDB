@@ -25,5 +25,23 @@ router.put('/api/list/:id', dataController.update);
 
 router.delete('/api/list/:id', dataController.delete);
 
+//rutas para users
+router.get('/api/listuser', dataController.listusers);
+
+router.post('/api/adduser', dataController.adduser);
+
+router.put('/api/updateuser/:id', dataController.updateuser);
+
+router.delete('/api/deleteuser/:id', dataController.deleteuser);
+
+//rutas para horarios
+router.get('/api/listschedule', dataController.listshedules);
+
+router.post('/api/addschedule', dataController.addschedule);
+
+router.put('/api/updateschedule/:id', dataController.updateschedule);
+ 
+router.delete('/api/deleteschedule/:id', dataController.deleteschedule);
+
 
 module.exports = router;
