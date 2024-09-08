@@ -1,6 +1,7 @@
 const Data = require('../models/data');
 const DataUsers = require('../models/userSchema');
 const DataSchedules = require('../models/scheduleSchema');
+const DataActivity = require('../models/activitySchema');
 
 //list all items
 exports.list = async (req, res) => {
@@ -303,4 +304,86 @@ exports.deleteschedule = async (req, res, next) => {
 
 };
 
+//CONTROLADORES PARA ACTIVIDADES
 
+//agregar actividad
+exports.addactivity = async (req, res) => {
+    const { name, description, date } = req.body;
+
+    const data = new DataActivity({
+        name: name || 0,
+        description: description || 0,
+        date: new Date(date)
+    })
+
+    try {
+        await data.save();
+        res.json({ message: "Added new message", data: data });
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+        next();
+    }
+}
+
+//eliminar actividad
+exports.deleteactivity = async (req, res, next) => {
+    try {
+        const data = await DataActivity.findOneAndDelete(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "activity not found" })
+        }
+        res.json({ message: "activity deleted", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+//actualizar actividad
+exports.updateactivity = async (req, res, next) => {
+    try {
+        const data = await DataActivity.findOneAndUpdate(
+            { _id: req.params.id },
+            req.body,
+            {
+                new: true,
+                runValidators: true,
+                context: 'query'
+            }
+        );
+        if (!data) {
+            return res.status(400).json({ message: "activity not found" })
+        }
+        res.json({ message: "activity updated", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+
+};
+
+//buscar todas las actividades
+exports.listsactivity = async (req, res) => {
+    try {
+        const data = await DataActivity.find({});
+        res.json(data);
+    } catch (error) {
+        console.log(error);
+        res.status(200).send(error);
+        next();
+    }
+};

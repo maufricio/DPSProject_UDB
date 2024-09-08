@@ -40,8 +40,16 @@ router.get('/api/listschedule', dataController.listshedules);
 router.post('/api/addschedule', dataController.addschedule);
 
 router.put('/api/updateschedule/:id', dataController.updateschedule);
- 
+
 router.delete('/api/deleteschedule/:id', dataController.deleteschedule);
 
+//rutas para actividades
+router.get('/api/listactivity', dataController.listsactivity);
+
+router.post('/api/addactivity', dataController.addactivity);
+
+router.put('/api/updateactivity/:id', dataController.updateactivity);
+
+router.delete('/api/deleteactivity/:id', dataController.deleteactivity);
 
 module.exports = router;
