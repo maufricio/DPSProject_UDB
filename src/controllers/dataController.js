@@ -224,6 +224,9 @@ exports.deleteuser = async (req, res, next) => {
 };
 
 
+//This is for the token blacklist checking when the user logs out, so then we'll invalidate the past current token.
+let blackListedTokens = [];
+
 exports.login = async (req, res) => {
     const { email, password } = req.body;
     const user = await DataUsers.findOne({ email:
@@ -239,18 +242,7 @@ exports.login = async (req, res) => {
 };
 
 
-exports.logout = async (req, res) => {
-    const { email } = req.body;
-    const user = await DataUsers.findOne
-        ({ email: email });
-    if (user) {
-        user.status = false; //cambiar el estado a falso porque su estado de activo ya no es cierto. Entonces sacar del dashboard
-        await user.save();
-        res.json({ message: "User logged out", data: user });
-    } else {
-        res.status(400).json({ message: "User not found" });
-    }
-};
+
 
 
 //controladores para horarios

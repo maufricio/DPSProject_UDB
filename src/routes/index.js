@@ -59,6 +59,6 @@ router.delete('/api/deleteactivity/:id', authentication,  dataController.deletea
 //rutas para inicio de sesión y cerrar sesión
 
 router.post('/api/login', dataController.login);
-router.post('/api/logout', authentication, dataController.logout);
+router.post('/api/logout', authentication, authentication.logout); // this logic is in the same as with the middlewareAuthentication.js file
 
 module.exports = router;
