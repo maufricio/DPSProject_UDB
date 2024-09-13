@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const router = Router();
 const dataController = require('../controllers/dataController');
+const { authentication }  = require('../controllers/middlewareAuthentication');
 
 //routes
 router.get('/api/test', (req, res) => {
@@ -11,7 +12,7 @@ router.get('/api/test', (req, res) => {
     res.json(data);
 });
 
-router.get('/api/list', dataController.list);
+router.get('/api/list',dataController.list);
 
 router.get('/api/list/last', dataController.last);
 
@@ -34,22 +35,30 @@ router.put('/api/updateuser/:id', dataController.updateuser);
 
 router.delete('/api/deleteuser/:id', dataController.deleteuser);
 
+
+
 //rutas para horarios
-router.get('/api/listschedule', dataController.listshedules);
+router.get('/api/listschedule', authentication, dataController.listshedules);
 
-router.post('/api/addschedule', dataController.addschedule);
+router.post('/api/addschedule', authentication, dataController.addschedule);
 
-router.put('/api/updateschedule/:id', dataController.updateschedule);
+router.put('/api/updateschedule/:id', authentication, dataController.updateschedule);
 
-router.delete('/api/deleteschedule/:id', dataController.deleteschedule);
+router.delete('/api/deleteschedule/:id', authentication, dataController.deleteschedule);
 
 //rutas para actividades
-router.get('/api/listactivity', dataController.listsactivity);
+router.get('/api/listactivity', authentication, dataController.listsactivity);
 
-router.post('/api/addactivity', dataController.addactivity);
+router.post('/api/addactivity', authentication, dataController.addactivity);
 
-router.put('/api/updateactivity/:id', dataController.updateactivity);
+router.put('/api/updateactivity/:id', authentication,  dataController.updateactivity);
 
-router.delete('/api/deleteactivity/:id', dataController.deleteactivity);
+router.delete('/api/deleteactivity/:id', authentication,  dataController.deleteactivity);
+
+
+//rutas para inicio de sesión y cerrar sesión
+
+router.post('/api/login', dataController.login);
+router.post('/api/logout', authentication, dataController.logout);
 
 module.exports = router;

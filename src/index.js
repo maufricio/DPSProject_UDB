@@ -1,8 +1,7 @@
 'use strict'
 const express = require('express');
-const app = express();
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
+
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { MongoClient } = require("mongodb");
@@ -10,6 +9,7 @@ require('dotenv').config();
 
 
 //settings
+const app = express();
 const port = process.env.PORT || 3001;
 app.set('json spaces', 2);
 

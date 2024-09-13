@@ -2,6 +2,8 @@ const Data = require('../models/data');
 const DataUsers = require('../models/userSchema');
 const DataSchedules = require('../models/scheduleSchema');
 const DataActivity = require('../models/activitySchema');
+const { generateToken } = require('./jwtUtils');
+
 
 //list all items
 exports.list = async (req, res) => {
@@ -151,13 +153,14 @@ exports.listusers = async (req, res) => {
 
 //añadir usuario
 exports.adduser = async (req, res) => {
+    //Status no es posible que venga porque eso se le asigna acá en el backend
     const { name, email, password, status } = req.body;
 
     const data = new DataUsers({
         name: name || 0,
         email: email || 0,
         password: password || 0,
-        status: status || 0
+        status: status || false
     })
 
     try {
@@ -219,6 +222,36 @@ exports.deleteuser = async (req, res, next) => {
     }
 
 };
+
+
+exports.login = async (req, res) => {
+    const { email, password } = req.body;
+    const user = await DataUsers.findOne({ email:
+        email, password: password });
+    if (user) {
+        const token = generateToken(user);
+        user.status = true; //El estado es true porque acaba de ingresar a la aplicación.
+        await user.save();
+        res.json({ success: true, message: "User logged in", token: token });
+    } else {
+        res.status(400).json({ message: "User not found", success: false});
+    }
+};
+
+
+exports.logout = async (req, res) => {
+    const { email } = req.body;
+    const user = await DataUsers.findOne
+        ({ email: email });
+    if (user) {
+        user.status = false; //cambiar el estado a falso porque su estado de activo ya no es cierto. Entonces sacar del dashboard
+        await user.save();
+        res.json({ message: "User logged out", data: user });
+    } else {
+        res.status(400).json({ message: "User not found" });
+    }
+};
+
 
 //controladores para horarios
 
