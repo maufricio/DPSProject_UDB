@@ -4,12 +4,11 @@ require('dotenv').config();
 const DataUsers = require('../models/userSchema');
 
 //Middleware para verificar si el usuario está logueado
-app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 
-let blacklistedTokens = [];
+let blacklistedTokens = []; // Lista de tokens inválidos
 const validateToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers['authorization'];
 
   if (authHeader) {
     const token = authHeader.split(' ')[1]; // Bearer <token>
@@ -28,9 +27,9 @@ const validateToken = (req, res, next) => {
           success: false,
           message: 'Invalid token',
         });
-      } else {
-        req.user = payload;
-        next();
+      } else if(!err && payload) {
+        req.user = payload; // Attach the decoded token payload (user info) to the request
+        next(); // Continue with the request processing
       }
     });
   } else {
@@ -41,15 +40,16 @@ const validateToken = (req, res, next) => {
   }
 };
 
+
 const logout = async (req, res) => {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers['authorization'];
   const { email } = req.body;
   const user = await DataUsers.findOne({ email: email });
 
   if(authHeader) {
       const token = authHeader.split(' ')[1];
       blacklistedTokens.push(token);
-      user.status = false; //cambiar el estado a falso porque su estado de activo ya no es cierto. Entonces sacar del dashboard
+      user.activity = false; //cambiar el estado a falso porque su estado de activo ya no es cierto. Entonces sacar del dashboard
       await user.save();
       res.json({ message: "User logged out"});
   } else {
@@ -57,8 +57,9 @@ const logout = async (req, res) => {
   }
 };
 
+
 module.exports = {
     validateToken,
-    logout
+    logout,
 };
 

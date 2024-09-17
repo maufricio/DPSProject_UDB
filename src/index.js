@@ -1,7 +1,6 @@
 'use strict'
 const express = require('express');
 const morgan = require('morgan');
-
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { MongoClient } = require("mongodb");
@@ -37,9 +36,7 @@ run().catch(console.dir);
 //middlewares
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-//app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json()); //Parse incoming requests with JSON payloads
 app.use(cors());
 
 //routes
@@ -49,3 +46,9 @@ app.use(require('./routes/index'));
 app.listen(port, () => {
     console.log('Server listening on port ' + port)
 })
+
+//Error-handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ message: "Something went wrong!" });
+});

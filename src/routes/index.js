@@ -1,15 +1,12 @@
 const { Router } = require('express');
 const router = Router();
 const dataController = require('../controllers/dataController');
-const { authentication }  = require('../controllers/middlewareAuthentication');
+const { validateToken, logout }  = require('../controllers/middlewareAuthentication');
 
 //routes
-router.get('/api/test', (req, res) => {
-    const data = {
-        "id": "1",
-        "name": "API is working"
-    }
-    res.json(data);
+// Example public route
+router.get('/', (req, res) => {
+    res.send('Welcome to the public API');
 });
 
 router.get('/api/list',dataController.list);
@@ -35,30 +32,32 @@ router.put('/api/updateuser/:id', dataController.updateuser);
 
 router.delete('/api/deleteuser/:id', dataController.deleteuser);
 
+router.delete('/api/deleteAllUsers', dataController.deleteAllUsers);
+
 
 
 //rutas para horarios
-router.get('/api/listschedule', authentication, dataController.listshedules);
+router.get('/api/listschedule', validateToken, dataController.listshedules);
 
-router.post('/api/addschedule', authentication, dataController.addschedule);
+router.post('/api/addschedule', validateToken, dataController.addschedule);
 
-router.put('/api/updateschedule/:id', authentication, dataController.updateschedule);
+router.put('/api/updateschedule/:id', validateToken, dataController.updateschedule);
 
-router.delete('/api/deleteschedule/:id', authentication, dataController.deleteschedule);
+router.delete('/api/deleteschedule/:id', validateToken, dataController.deleteschedule);
 
 //rutas para actividades
-router.get('/api/listactivity', authentication, dataController.listsactivity);
+router.get('/api/listactivity', validateToken, dataController.listsactivity);
 
-router.post('/api/addactivity', authentication, dataController.addactivity);
+router.post('/api/addactivity', validateToken, dataController.addactivity);
 
-router.put('/api/updateactivity/:id', authentication,  dataController.updateactivity);
+router.put('/api/updateactivity/:id', validateToken,  dataController.updateactivity);
 
-router.delete('/api/deleteactivity/:id', authentication,  dataController.deleteactivity);
+router.delete('/api/deleteactivity/:id', validateToken,  dataController.deleteactivity);
 
 
 //rutas para inicio de sesión y cerrar sesión
 
 router.post('/api/login', dataController.login);
-router.post('/api/logout', authentication, authentication.logout); // this logic is in the same as with the middlewareAuthentication.js file
+router.post('/api/logout', validateToken, logout); // this logic is in the same as with the middlewareAuthentication.js file
 
 module.exports = router;

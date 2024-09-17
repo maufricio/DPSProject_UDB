@@ -76,7 +76,7 @@ exports.Date_show = async (req, res) => {
 };
 
 function isDateValid(dateStr) {
-    var isDateOK = !isNaN(new Date(dateStr));
+    var isDateOK = !isNaN(new Date(dateStr)); // true if dateStr is a valid date
     var date = new Date(dateStr);
     if (isDateOK) {
         let day = date.getDate();
@@ -90,7 +90,7 @@ function isDateValid(dateStr) {
     }
 };
 
-exports.add = async (req, res) => {
+exports.add = async (req, res, next) => {
     const { temperatura, humedad_relativa, CO2, VOC, intensidad_luminosa } = req.body;
 
     const data = new Data({
@@ -140,7 +140,7 @@ exports.delete = async (req, res, next) => {
 //Controladores para usuarios
 
 //buscar todos los usuarios
-exports.listusers = async (req, res) => {
+exports.listusers = async (req, res, next) => {
     try {
         const data = await DataUsers.find({});
         res.json(data);
@@ -152,15 +152,16 @@ exports.listusers = async (req, res) => {
 };
 
 //añadir usuario
-exports.adduser = async (req, res) => {
+exports.adduser = async (req, res, next) => {
     //Status no es posible que venga porque eso se le asigna acá en el backend
-    const { name, email, password, status } = req.body;
+    const { name, email, password, status, activity } = req.body;
 
     const data = new DataUsers({
         name: name || 0,
         email: email || 0,
         password: password || 0,
-        status: status || false
+        status: status || false,
+        activity: activity || false
     })
 
     try {
@@ -169,7 +170,7 @@ exports.adduser = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.send(error);
-        next();
+        next(error);
     }
 }
 
@@ -223,6 +224,23 @@ exports.deleteuser = async (req, res, next) => {
 
 };
 
+//Eliminar usuarios
+
+exports.deleteAllUsers = async (req, res, next) => {
+    try {
+        const data = await DataUsers.deleteMany({});
+        if (!data) {
+            return res.status(500).json({ message: "users not found" })
+        }
+        res.json({ message: "users deleted", data: data });
+
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ message: "Error" });
+        next(error);
+    }
+}
+
 
 //This is for the token blacklist checking when the user logs out, so then we'll invalidate the past current token.
 let blackListedTokens = [];
@@ -232,8 +250,12 @@ exports.login = async (req, res) => {
     const user = await DataUsers.findOne({ email:
         email, password: password });
     if (user) {
-        const token = generateToken(user);
-        user.status = true; //El estado es true porque acaba de ingresar a la aplicación.
+        const tokenPayload = { 
+            userId: user.name, // Example of including user ID
+            email: user.email // Include necessary information
+        };
+        const token = generateToken(tokenPayload);
+        user.activity = true; //El estado es true porque acaba de ingresar a la aplicación.
         await user.save();
         res.json({ success: true, message: "User logged in", token: token });
     } else {
@@ -261,12 +283,12 @@ exports.listshedules = async (req, res) => {
 
 //añadir horario
 exports.addschedule = async (req, res) => {
-    const { name, description, date } = req.body;
+    const { name, description, hour } = req.body;
 
     const data = new DataSchedules({
         name: name || 0,
         description: description || 0,
-        date: new Date(date)
+        hour: hour || 0
     })
 
     try {
@@ -332,13 +354,14 @@ exports.deleteschedule = async (req, res, next) => {
 //CONTROLADORES PARA ACTIVIDADES
 
 //agregar actividad
-exports.addactivity = async (req, res) => {
-    const { name, description, date } = req.body;
+exports.addactivity = async (req, res, next) => {
+    const { name, description, date, status } = req.body;
 
     const data = new DataActivity({
         name: name || 0,
         description: description || 0,
-        date: new Date(date)
+        date: new Date(date),
+        status: status || false
     })
 
     try {
