@@ -2,6 +2,7 @@ const Data = require('../models/data');
 const DataUsers = require('../models/userSchema');
 const DataSchedules = require('../models/scheduleSchema');
 const DataActivity = require('../models/activitySchema');
+const TokenSchema = require('../models/tokensSchema');
 const { generateToken } = require('./jwtUtils');
 
 
@@ -255,17 +256,18 @@ exports.login = async (req, res) => {
             email: user.email // Include necessary information
         };
         const token = generateToken(tokenPayload);
+        const tokenStored = new TokenSchema({
+            token: token,
+            userId: user._id,
+        }); 
         user.activity = true; //El estado es true porque acaba de ingresar a la aplicación.
         await user.save();
+        await tokenStored.save(); //Guardamos el token en la base de datos
         res.json({ success: true, message: "User logged in", token: token });
     } else {
         res.status(400).json({ message: "User not found", success: false});
     }
 };
-
-
-
-
 
 //controladores para horarios
 
@@ -283,12 +285,13 @@ exports.listshedules = async (req, res) => {
 
 //añadir horario
 exports.addschedule = async (req, res) => {
-    const { name, description, hour } = req.body;
+    const { name, description, hour, idUser } = req.body;
 
     const data = new DataSchedules({
         name: name || 0,
         description: description || 0,
-        hour: hour || 0
+        hour: hour || 0,
+        idUser: idUser || 0
     })
 
     try {
@@ -355,13 +358,14 @@ exports.deleteschedule = async (req, res, next) => {
 
 //agregar actividad
 exports.addactivity = async (req, res, next) => {
-    const { name, description, date, status } = req.body;
+    const { name, description, date, status, idUser } = req.body;
 
     const data = new DataActivity({
         name: name || 0,
         description: description || 0,
         date: new Date(date),
-        status: status || false
+        status: status || false,
+        idUser: idUser || 0
     })
 
     try {

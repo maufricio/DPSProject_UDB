@@ -15,6 +15,10 @@ const scheduleSchema = new Schema({
         type: String,
         required: true
     },
+    idUser: {
+        type: String,
+        required: true
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Schedule', scheduleSchema, 'schedules');

@@ -17,6 +17,10 @@ const activitySchema = new Schema({
     status: {
         type: Boolean,
         required: true
+    },
+    idUser: {
+        type: String,
+        required: true
     }
 }, { timestamps: true });
 
