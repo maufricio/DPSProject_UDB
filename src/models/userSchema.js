@@ -8,20 +8,29 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
         required: true
     },
     status: {
-        type: Boolean,
-        required: true
+        type: String,
+        required: true,
+        default: 'Sin verificar'
     }
     , activity: {
         type: Boolean,
-        required: true
+        required: true,
+        default: true
+    },
+    code:{
+        type: String,
+        required: false
     }
+
+    
 },{ timestamps: true });
 
 module.exports = mongoose.model('User', userSchema, 'users');

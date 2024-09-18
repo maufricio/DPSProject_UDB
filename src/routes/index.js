@@ -28,6 +28,8 @@ router.get('/api/listuser', dataController.listusers);
 
 router.post('/api/adduser', dataController.adduser);
 
+router.post('/api/verifyuser', dataController.verifyuser);
+
 router.put('/api/updateuser/:id', dataController.updateuser);
 
 router.delete('/api/deleteuser/:id', dataController.deleteuser);

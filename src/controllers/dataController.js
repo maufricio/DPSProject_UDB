@@ -4,6 +4,9 @@ const DataSchedules = require('../models/scheduleSchema');
 const DataActivity = require('../models/activitySchema');
 const TokenSchema = require('../models/tokensSchema');
 const { generateToken } = require('./jwtUtils');
+const nodemailer = require('nodemailer');  
+const { v4: uuidv4 } = require('uuid');  
+
 
 
 //list all items
@@ -153,27 +156,88 @@ exports.listusers = async (req, res, next) => {
 };
 
 //añadir usuario
-exports.adduser = async (req, res, next) => {
-    //Status no es posible que venga porque eso se le asigna acá en el backend
-    const { name, email, password, status, activity } = req.body;
-
+exports.adduser = async (req, res) => {
+    const { name, email, password } = req.body;
+     // Generar un código de verificación
+     const verificationCode = uuidv4();
     const data = new DataUsers({
         name: name || 0,
         email: email || 0,
         password: password || 0,
-        status: status || false,
-        activity: activity || false
-    })
-
+        code: verificationCode
+    });
     try {
-        await data.save();
-        res.json({ message: "Added new message", data: data });
+       
+        const correoexistente = await DataUsers.findOne({ email })|| null;
+
+        if (correoexistente !==null) {
+            return res.status(400).json({ message: "El correo ya  esta en uso, prueba con uno diferente" });
+        }
+       
+        //configuración del correo
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',  
+            auth: {
+                user:process.env.Email_User,  
+                pass:process.env.Email_Pass         
+            }
+        });
+        // datos del correo a enviar
+        const mailOptions = {
+            from:process.env.Email_User,
+            to: email,
+            subject: 'Verificación de la cuenta para usar asistente personal',
+            text: `Debes  verificar tu cuenta con el siguiente código: ${verificationCode}`
+          
+        };
+
+        // Enviar el correo de verificación
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ message: "Error no se pudo enviar el correo de verificación vuelve a intentar"});
+            } else {
+                
+                console.log('Correo enviado: ' + info.response);
+                data.save();
+                return res.status(200).json({ message: "Usuario creado. Revisa tu correo para verificar la cuenta." });
+            }
+
+        });
+       
     } catch (error) {
-        console.log(error);
-        res.send(error);
-        next(error);
+        res.status(500).json({ message: "Error al crear el usuario"/*, error: error.message*/ });
+       // res.send(error);
+        //next(error);
     }
 }
+exports.verifyuser = async (req, res, next) => {
+    const { email, code } = req.body;
+
+    try {
+        const user = await DataUsers.findOne({ email: email })|| null;
+
+        if (user === null) {
+            return res.status(400).json({ message: "Nose encontró el correo, prueba registrándote primero" });
+        }
+
+        if (user.status === "Verificado") {
+            return res.status(400).json({ message: "El correo ya esta verificado" });
+        }
+
+        if (user.code === code) {
+            user.status = "Verificado";
+            await user.save();
+            return res.status(200).json({ message: "Verificación exitosa" });
+        } else {
+            return res.status(400).json({ message: "Código de verificación incorrecto" });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error al verificar el usuario" });
+    }
+};
+
 
 //actualizar usuario
 exports.updateuser = async (req, res, next) => {
