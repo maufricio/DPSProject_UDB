@@ -349,11 +349,12 @@ exports.listshedules = async (req, res) => {
 
 //añadir horario
 exports.addschedule = async (req, res) => {
-    const { name, description, hour, idUser } = req.body;
+    const { name, description, day, hour, idUser } = req.body;
 
     const data = new DataSchedules({
         name: name || 0,
         description: description || 0,
+        day: day || 0,
         hour: hour || 0,
         idUser: idUser || 0
     })

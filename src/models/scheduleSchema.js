@@ -11,7 +11,11 @@ const scheduleSchema = new Schema({
         type: String,
         required: true
     },
-    hour:{
+    day: {
+        type: String,
+        require: true
+    },
+    hour: {
         type: String,
         required: true
     },
