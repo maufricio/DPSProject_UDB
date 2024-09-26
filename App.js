@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './src/Home';
 import Config from './src/Config';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Chatbot from './src/components/Chatbot';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,11 @@ const App = () => {
         <Tab.Screen name="Configuración" component={Config} options={{
           tabBarIcon: ({size,color}) => (
             <Icon name="cog" size={size} color={color}/>
+          )
+        }}/>
+          <Tab.Screen name='Chatbot' component={Chatbot} options={{
+          tabBarIcon: ({size,color}) => (
+            <Icon name="chat" size={size} color={color}/>
           )
         }}/>
       </Tab.Navigator>
