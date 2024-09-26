@@ -1,32 +1,23 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const predefinedQuestionsSchema = new Schema({
-    questionId :{
-        type: String,
-        required: true,
-        unique: true
-    },
+const questionsModel = new Schema({
     question: {
         type: String,
         required: true
     },
     responses: {
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
+        type: Array,
         required: true
     },
     keywords: {
         type: Array,
         required: true
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
+    category: {
+        type: String,
+        required: true
     }
 });
 
-module.exports = mongoose.model('PredefinedQuestions', predefinedQuestionsSchema);
+module.exports = mongoose.model('QuestionsModel', questionsModel);

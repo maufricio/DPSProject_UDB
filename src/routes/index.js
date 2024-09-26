@@ -2,6 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const dataController = require('../controllers/dataController');
 const { validateToken, logout }  = require('../controllers/middlewareAuthentication');
+const chatbotController = require('../controllers/chatbotController');
 
 //routes
 // Example public route
@@ -61,5 +62,12 @@ router.delete('/api/deleteactivity/:id', validateToken,  dataController.deleteac
 
 router.post('/api/login', dataController.login);
 router.post('/api/logout', validateToken, logout); // this logic is in the same as with the middlewareAuthentication.js file
+
+
+//Routes for chabot
+
+router.post('/api/chatbot/uploadQuestions', dataController.uploadQuestions);
+router.post('/api/chatbot/uploadSingleQuestion', dataController.uploadSingleQuestion);
+router.post('/api/chatbot/makeAQuestion', chatbotController.handleInteraction);
 
 module.exports = router;
