@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app-tareas",
-    "slug": "app-tareas",
+    "name": "Frontend",
+    "slug": "Frontend",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
