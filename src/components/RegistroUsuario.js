@@ -30,12 +30,27 @@ export default function RegistroUsuario() {
             password: values.password
           });
           //Alert.alert('¡Éxito!',response.data.message);
+         
+
+
           navigation.navigate('VerificacionCorreo');
         } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response) {
           const errorMessage = error?.response?.data?.message || 'Problemas al realizar el registro intenta mas tarde';
-      Alert.alert('¡ERROR!', errorMessage);
-      console.error(error);
-        } 
+      Alert.alert('¡ERROR!', errorMessage);  
+        } else if (error.request) {
+            
+            Alert.alert('¡ERROR!', 'Revisa tu conexión a Internet.');
+        } else {
+            
+            Alert.alert('¡ERROR!', 'Ocurrió un error en la solicitud.');
+        }
+    } else {
+        
+        Alert.alert('¡ERROR!', 'Ocurrió un error inesperado.');
+    }
+}
       };
   return (
     <Formik 

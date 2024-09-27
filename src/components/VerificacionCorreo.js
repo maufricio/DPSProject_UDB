@@ -8,7 +8,7 @@ import uri from "./Data";
 import { useNavigation } from '@react-navigation/native';
 const validacion = Yup.object().shape({
     email: Yup.string().email('debe ser un correo').required("Debe digitar su correo"),
-    code: Yup.string().typeError("la contraseña debe ser una cadena de texto").required("Digite su contraseña"),
+    code: Yup.string().typeError("la contraseña debe ser una cadena de texto").required("Digite su codigo"),
       
   });
 
@@ -24,15 +24,27 @@ export default function VerificacionCorreo() {
         code: values.code
       });
       //Alert.alert('¡Éxito!', response.data.message);
-
+      
       navigation.navigate('Home1');
     } catch (error) {
       //console.error('Error en la respuesta:', error.response?.data);
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
       const errorMessage = error?.response?.data?.message || 'Problemas al realizar la verificación intenta mas tarde';
       Alert.alert('¡ERROR!', errorMessage);
-      console.error(error);
-    } 
+    } else if (error.request) {
+            
+      Alert.alert('¡ERROR!', 'Revisa tu conexión a Internet.');
+  } else {
+      
+      Alert.alert('¡ERROR!', 'Ocurrió un error en la solicitud.');
+  }
+} else {
+  
+  Alert.alert('¡ERROR!', 'Ocurrió un error inesperado.');
   };
+}
+}
 
   return (
     <View>
