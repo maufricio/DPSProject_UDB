@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegistroUsuario from './components/RegistroUsuario';
 import VerificacionCorreo from './components/VerificacionCorreo';
 import Home from './components/Home';
+import Headerformularios from './components/Headerformularios';
 const Stack = createStackNavigator();
 
 export default function Stackdatos() {
@@ -13,13 +14,13 @@ export default function Stackdatos() {
     <Stack.Screen
       name="Registro Usuario"
       component={RegistroUsuario} 
-      options={{ title: 'Registro Usuario', headerLeft: () => null,headerBackTitleVisible: false, }}
+      options={{ header:()=><Headerformularios></Headerformularios>, headerLeft: () => null, }}
     />
     <Stack.Screen
     name="VerificacionCorreo"
     component={VerificacionCorreo} 
-    options={{ title: 'Verificación de Correo',
-    headerLeft: () => null,  headerBackTitleVisible: false, }}
+    options={{ header:()=><Headerformularios></Headerformularios>,
+    headerLeft: () => null,   }}
     />
     
     <Stack.Screen

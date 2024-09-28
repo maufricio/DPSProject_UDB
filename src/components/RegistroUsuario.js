@@ -1,4 +1,4 @@
-import { View, Text,TextInput,Button,Alert,Modal,TouchableOpacity,StyleSheet } from 'react-native'
+import { View, Text,TextInput,Button,Alert,Modal,TouchableOpacity,StyleSheet, Image } from 'react-native'
 import React from 'react';
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -61,6 +61,7 @@ export default function RegistroUsuario() {
          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View  style={estilo.caja}>
           <Text style={estilo.tittle}>Registro de Usuario <Icon name="account-plus" size={24}/>  </Text>
+          <Image source={require('../img/logo_kalmp.jpg')} style={estilo.image}/>
             <TextInput style={estilo.input}
             placeholder="Nombre"
             value={values.name}
@@ -117,6 +118,14 @@ const estilo=StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
+  image: {
+    width: 150,
+    height: 150,
+    borderRadius: 10,
+     alignSelf: 'center',
+    marginBottom: 10,
+    borderRadius: 100, 
+  },
 
   input:{
     borderWidth:1,
@@ -135,7 +144,7 @@ const estilo=StyleSheet.create({
     elevation: 2,
   
   },
-  caja:{marginTop:100,
+  caja:{marginTop:20,
     marginLeft: 15,
     marginRight:15,
     //backgroundColor: '#dddd',
