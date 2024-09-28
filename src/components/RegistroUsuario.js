@@ -1,4 +1,4 @@
-import { View, Text,TextInput,Button,Alert,Modal } from 'react-native'
+import { View, Text,TextInput,Button,Alert,Modal,TouchableOpacity,StyleSheet } from 'react-native'
 import React from 'react';
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -53,22 +53,22 @@ export default function RegistroUsuario() {
 }
       };
   return (
-    <Formik 
+    <Formik  StyleSheet={estilo.contenedor}
     initialValues={{ name: '', email: '', password: '' }}
     validationSchema={validacion}
     onSubmit={agregarusuario}>
          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View >
-            <TextInput
+        <View  style={estilo.caja}>
+            <TextInput style={estilo.input}
             placeholder="Nombre"
             value={values.name}
             onChangeText={handleChange('name')}
             onBlur={handleBlur('name')}
           />
           {errors.name && touched.name && (
-            <Text>{errors.name}</Text>
+            <Text style={estilo.error}>{errors.name}</Text>
           )}
-           <TextInput
+           <TextInput style={estilo.input}
             placeholder="Correo Electrónico"
             value={values.email}
             onChangeText={handleChange('email')}
@@ -76,22 +76,81 @@ export default function RegistroUsuario() {
             keyboardType="email-address"
           />
           {errors.email && touched.email && (
-            <Text>{errors.email}</Text>
+            <Text style={estilo.error}>{errors.email}</Text>
           )}
-            <TextInput
+            <TextInput style={estilo.input}
                 placeholder="Contraseña"
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={handleBlur('password')}
                 secureTextEntry/>
                  {errors.password && touched.password && (
-            <Text>{errors.password}</Text>
+            <Text style={estilo.error}>{errors.password}</Text>
           )}
 
-          <Button title="Registrar" onPress={handleSubmit } />
+          <TouchableOpacity   onPress={handleSubmit} style={estilo.registrar}>
+            <Text style={{color:'#fff', fontWeight: 'bold', fontSize: 18}}> Registrar
+              {/*Icono de registro*/}
+              <Icon name="account-plus" size={30} color="#fff"/>
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
     </Formik>
 
   )
 }
+const estilo=StyleSheet.create({
+  contenedor:
+  {
+    backgroundColor : '#fff',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 80,
+    paddingVertical: 20,
+    borderRadius: 20,
+  },
+  tittle:{
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+
+  input:{
+    borderWidth:1,
+    borderColor: '#dddd',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical:10,
+    marginBottom: 10,
+    backgroundColor: '#F5F5F5',
+  
+  },
+  caja:{marginTop:20,
+    marginLeft: 15,
+    marginRight:15,
+    
+  },
+
+  registrar:{
+    backgroundColor: '#4CAF50',
+    borderRadius: 10, 
+    paddingVertical: 5,
+    //paddingHorizontal: 10,
+    //marginTop: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    //tamaño
+    //width: '100%',
+    //height: 50,
+  },
+  error:{
+    color:'red',
+    marginBottom: 10,
+    fontSize: 14,
+   marginLeft: 10,
+
+  }
+
+})
