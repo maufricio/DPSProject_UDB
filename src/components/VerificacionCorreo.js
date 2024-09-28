@@ -1,4 +1,4 @@
-import { View, Text,TextInput,Button,Alert } from 'react-native'
+import { View, Text,TextInput,Button,Alert, StyleSheet } from 'react-native'
 import React from 'react'
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -6,6 +6,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from 'axios';
 import uri from "./Data";
 import { useNavigation } from '@react-navigation/native';
+import CustomButton from './BotonCustomizado'; 
+
 const validacion = Yup.object().shape({
     email: Yup.string().email('debe ser un correo').required("Debe digitar su correo"),
     code: Yup.string().typeError("la contraseña debe ser una cadena de texto").required("Digite su codigo"),
@@ -25,7 +27,7 @@ export default function VerificacionCorreo() {
       });
       //Alert.alert('¡Éxito!', response.data.message);
       
-      navigation.navigate('Home1');
+      navigation.navigate('Inicio de Sesión');
     } catch (error) {
       //console.error('Error en la respuesta:', error.response?.data);
       if (axios.isAxiosError(error)) {
@@ -48,14 +50,14 @@ export default function VerificacionCorreo() {
 
   return (
     <View>
-      <Text>VerificacionCorreo</Text>
-      <Formik 
+      
+      <Formik style={estilo.contenedor} 
     initialValues={{ email: '', code: '' }}
     validationSchema={validacion}
     onSubmit={verificacion}>
          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-        <View >
-           <TextInput
+        <View  style={estilo.caja}><Text style={estilo.tittle}>Verificacion del correo <Icon name="email-check-outline" size={24}/>  </Text>
+           <TextInput style={estilo.input}
             placeholder="Correo Electrónico"
             value={values.email}
             onChangeText={handleChange('email')}
@@ -63,9 +65,9 @@ export default function VerificacionCorreo() {
             keyboardType="email-address"
           />
           {errors.email && touched.email && (
-            <Text>{errors.email}</Text>
+            <Text style={estilo.error}>{errors.email}</Text>
           )}
-            <TextInput
+            <TextInput style={estilo.input}
                 placeholder="Codigo"
                 value={values.code}
                 onChangeText={handleChange('code')}
@@ -75,7 +77,7 @@ export default function VerificacionCorreo() {
             <Text>{errors.code}</Text>
           )}
 
-          <Button title="Verificar" onPress={handleSubmit} />
+          <CustomButton title="Verificar" onPress={handleSubmit} />
         </View>
       )}
     </Formik>
@@ -83,3 +85,60 @@ export default function VerificacionCorreo() {
     </View>
   )
 }
+
+
+const estilo=StyleSheet.create({
+  contenedor:
+  {
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+  },
+  tittle:{
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+
+  input:{
+    borderWidth:1,
+    borderColor: '#dddd',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical:10,
+    marginBottom: 10,
+    backgroundColor: '#F5F5F5',
+    marginTop:1,
+    //sombra
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
+  
+  },
+  caja:{marginTop:100,
+    marginLeft: 15,
+    marginRight:15,
+    //backgroundColor: '#dddd',
+   // borderColor:'#dddd',
+    justifyContent: 'center',
+    padding:20,
+    borderRadius: 20,
+    
+  },
+  icono:{
+    color: '#fff',
+    fontSize: 24,
+    marginLeft: 10,
+  },
+  error:{
+    color:'red',
+    marginBottom: 10,
+    fontSize: 14,
+   marginLeft: 10,
+
+  }
+
+})

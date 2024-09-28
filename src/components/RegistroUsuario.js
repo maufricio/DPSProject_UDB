@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import axios from 'axios';
 import uri from "./Data";
 import { useNavigation } from "@react-navigation/native";
+import CustomButton from './BotonCustomizado'; 
 const validacion = Yup.object().shape({
     name: Yup.string().typeError("El nombre debe ser en texto").required("Digite su nombre"),
     email: Yup.string().email('debe ser un correo').required("Debe digitar su correo"),
@@ -59,6 +60,7 @@ export default function RegistroUsuario() {
     onSubmit={agregarusuario}>
          {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
         <View  style={estilo.caja}>
+          <Text style={estilo.tittle}>Registro de Usuario <Icon name="account-plus" size={24}/>  </Text>
             <TextInput style={estilo.input}
             placeholder="Nombre"
             value={values.name}
@@ -87,13 +89,15 @@ export default function RegistroUsuario() {
                  {errors.password && touched.password && (
             <Text style={estilo.error}>{errors.password}</Text>
           )}
+         
 
-          <TouchableOpacity   onPress={handleSubmit} style={estilo.registrar}>
-            <Text style={{color:'#fff', fontWeight: 'bold', fontSize: 18}}> Registrar
-              {/*Icono de registro*/}
-              <Icon name="account-plus" size={30} color="#fff"/>
-            </Text>
-          </TouchableOpacity>
+     {/*<Button title="Registrar" onPress={handleSubmit} />*/}
+     <CustomButton onPress={handleSubmit} title="Registrar">
+       {/*<Text style={estilo.botonText}>Registrar</Text>
+       <Icon name="account-plus" size={24}/>*/}
+      </CustomButton>
+
+      <Text style={estilo.advice} onPress={() => navigation.navigate('VerificacionCorreo')}>¿No te verificastes? Verificate</Text>
         </View>
       )}
     </Formik>
@@ -103,13 +107,10 @@ export default function RegistroUsuario() {
 const estilo=StyleSheet.create({
   contenedor:
   {
-    backgroundColor : '#fff',
-    flex: 1,
+    padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 80,
-    paddingVertical: 20,
-    borderRadius: 20,
+
   },
   tittle:{
     fontSize: 24,
@@ -125,25 +126,29 @@ const estilo=StyleSheet.create({
     paddingVertical:10,
     marginBottom: 10,
     backgroundColor: '#F5F5F5',
+    marginTop:1,
+    //sombra
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
   
   },
-  caja:{marginTop:20,
+  caja:{marginTop:100,
     marginLeft: 15,
     marginRight:15,
+    //backgroundColor: '#dddd',
+   // borderColor:'#dddd',
+    justifyContent: 'center',
+    padding:20,
+    borderRadius: 20,
     
   },
-
-  registrar:{
-    backgroundColor: '#4CAF50',
-    borderRadius: 10, 
-    paddingVertical: 5,
-    //paddingHorizontal: 10,
-    //marginTop: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    //tamaño
-    //width: '100%',
-    //height: 50,
+  icono:{
+    color: '#fff',
+    fontSize: 24,
+    marginLeft: 10,
   },
   error:{
     color:'red',
@@ -151,6 +156,13 @@ const estilo=StyleSheet.create({
     fontSize: 14,
    marginLeft: 10,
 
-  }
+  },
+  advice: {
+    color: '#000',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'semibold',
+    marginTop: 20,
+  },
 
 })

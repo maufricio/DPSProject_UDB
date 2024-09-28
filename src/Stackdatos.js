@@ -13,17 +13,20 @@ export default function Stackdatos() {
     <Stack.Screen
       name="Registro Usuario"
       component={RegistroUsuario} 
-      options={{ title: 'Registro Usuario' }}
+      options={{ title: 'Registro Usuario', headerLeft: () => null,headerBackTitleVisible: false, }}
     />
     <Stack.Screen
     name="VerificacionCorreo"
     component={VerificacionCorreo} 
-    options={{ title: 'Verificación de Correo' }}
+    options={{ title: 'Verificación de Correo',
+    headerLeft: () => null,  headerBackTitleVisible: false, }}
     />
+    
     <Stack.Screen
     name="Home1"
     component={Home} 
-    options
+    options={{title:'Home',
+      headerLeft: () => null,headerBackTitleVisible: false, }}
 
     />
   

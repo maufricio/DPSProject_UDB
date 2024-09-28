@@ -37,15 +37,15 @@ const App = () => {
           ),
           headerShown: false
         }}/>
-        <Tab.Screen name='Registro de Usuario' component={RegistroUsuario} options={{
+       {/* <Tab.Screen name='Registro de Usuario' component={RegistroUsuario} options={{
           tabBarIcon: ({size,color}) => (
             <Icon name="account-plus" size={size} color={color}/>
           ),
           headerShown: false
-        }}/>
+        }}/>*/}
            <Tab.Screen name='Inicio de Sesión' component={InicioSesion} options={{
           tabBarIcon: ({size,color}) => (
-            <Icon name="account-plus" size={size} color={color}/>
+            <Icon name="account" size={size} color={color}/>
           ),
           headerShown: false
         }}/>

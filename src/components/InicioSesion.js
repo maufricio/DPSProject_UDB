@@ -41,7 +41,7 @@ export default function InicioSesion() {
             Alert.alert('¡HAS INICIADO SESIÓN!' + response.data.token);
             if(response.data.token){
                 await AsyncStorage.setItem('token', response.data.token);
-                navigation.navigate('Home');
+                navigation.navigate('Home1');
             }
         } catch (error) {
         Alert.alert('¡ERROR!', error);
@@ -93,7 +93,7 @@ export default function InicioSesion() {
             )}
             
         </Formik>
-        <Text style={styles.advice} onPress={() => navigation.navigate('Registro de Usuario')}>¿No tienes cuenta? Regístrate</Text>
+        <Text style={styles.advice} onPress={() => navigation.navigate('Registro Usuario')}>¿No tienes cuenta? Regístrate</Text>
         </View>
         
         
