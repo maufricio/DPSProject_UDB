@@ -6,9 +6,6 @@ const TokenSchema = require('../models/tokensSchema');
 const { generateToken } = require('./jwtUtils');
 const nodemailer = require('nodemailer');  
 const { v4: uuidv4 } = require('uuid');  
-//import QuestionsModel from '../models/questionsModel';
-const QuestionsModel = require('../models/questionsModel');
-
 
 //list all items
 exports.list = async (req, res) => {
@@ -439,9 +436,9 @@ exports.addactivity = async (req, res, next) => {
     const data = new DataActivity({
         name: name || 0,
         description: description || 0,
-        date: new Date(date),
+        date: date ? new Date(date) : new Date(),
         status: status || false,
-        idUser: idUser
+        idUser: idUser || 0
     });
 
     try {
@@ -517,55 +514,3 @@ exports.listsactivity = async (req, res) => {
     }
 };
 
-
-exports.uploadQuestions = async(req, res) => {
-    //insert questions from QUestionsModel to the database if doesn't exist otherwise update the questions, responses and keywords
-    try {
-        const questions = req.body; 
-        for (let i = 0; i < questions.length; i++) {
-            const question = questions[i];
-            const questionDB = await QuestionsModel.findOne({ question: question.question });
-            if (!questionDB) {
-                var newQuestion = new QuestionsModel({
-                    question: question.question,
-                    responses: question.responses,
-                    keywords: question.keywords
-                });
-                await newQuestion.save();
-                res.status(200).json({ message: "Questions added successfully" });
-            }
-            else {
-                res.status(400).json({ message: "Question already exists" });
-            }
-        }
-    } catch (error) {  
-        console.log(error);
-        res.status(500).send('Hubo un error');
-    }
-}
-
-
-exports.uploadSingleQuestion = async (req, res) => {
-    const { question, responses, keywords, category } = req.body;
-
-    const questionModel = new QuestionsModel({
-        question: question,
-        responses: responses,
-        keywords: keywords,
-        category: category
-    });
-    try {
-        const questionDb = await QuestionsModel.findOne({ question: question });
-
-        if(!questionDb) {
-            await questionModel.save();
-            res.json({ message: "Pregunta añadida", data: questionModel });
-        } else {
-            res.status(400).json({ message: "La pregunta ya existe" });
-        }
-    } catch (error) {
-        console.log(error);
-        res.send(error);
-    }
-
-}

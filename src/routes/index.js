@@ -2,12 +2,16 @@ const { Router } = require('express');
 const router = Router();
 const dataController = require('../controllers/dataController');
 const { validateToken, logout }  = require('../controllers/middlewareAuthentication');
-const chatbotController = require('../controllers/chatbotController');
+const Controller = require('../controllers/Controller');
 
 //routes
 // Example public route
-router.get('/', (req, res) => {
-    res.send('Welcome to the public API');
+router.get('/api/test', (req, res) => {
+    const data = {
+        "id": "1",
+        "name": "API is working"
+    }
+    res.json(data);
 });
 
 router.get('/api/list',dataController.list);
@@ -65,9 +69,6 @@ router.post('/api/logout', validateToken, logout); // this logic is in the same 
 
 
 //Routes for chabot
-
-router.post('/api/chatbot/uploadQuestions', dataController.uploadQuestions);
-router.post('/api/chatbot/uploadSingleQuestion', dataController.uploadSingleQuestion);
-router.post('/api/chatbot/makeAQuestion', chatbotController.handleInteraction);
+router.post('/api/chatbot/makeAQuestion', Controller.handleInteraction);
 
 module.exports = router;
