@@ -505,7 +505,7 @@ exports.updateactivity = async (req, res, next) => {
 exports.listsactivity = async (req, res) => {
     try {
         //Get activities filtering by user id
-        const data = await DataActivity.find({idUser: req.params.idUser});
+        const data = await DataActivity.find({idUser: req.params.id});
         res.json(data);
     } catch (error) {
         console.log(error);
@@ -513,4 +513,3 @@ exports.listsactivity = async (req, res) => {
         next();
     }
 };
-
