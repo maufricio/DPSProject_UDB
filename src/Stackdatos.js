@@ -6,16 +6,20 @@ import RegistroUsuario from './components/RegistroUsuario';
 import VerificacionCorreo from './components/VerificacionCorreo';
 import Home from './components/Home';
 import Headerformularios from './components/Headerformularios';
+import InicioSesion from './components/InicioSesion';
 const Stack = createStackNavigator();
 
-export default function Stackdatos() {
+export default function Stackdatos({initialRouteName, setToken}) {
   return (
-    <Stack.Navigator initialRouteName="Home1">
+  
+  <Stack.Navigator initialRouteName={initialRouteName}>
+
     <Stack.Screen
       name="Registro Usuario"
       component={RegistroUsuario} 
       options={{ header:()=><Headerformularios></Headerformularios>, headerLeft: () => null, }}
     />
+
     <Stack.Screen
     name="VerificacionCorreo"
     component={VerificacionCorreo} 
@@ -30,10 +34,17 @@ export default function Stackdatos() {
       headerLeft: () => null,headerBackTitleVisible: false, }}
 
     />
-  
-   
+
+    <Stack.Screen
+    name="InicioSesion"
+    options={{
+    header: () => <Headerformularios />,
+    headerLeft: () => null,
+    }}>
+      {props => <InicioSesion {...props} setToken={setToken} />}
+    </Stack.Screen>
     
   </Stack.Navigator>
-
+  
   )
 }
