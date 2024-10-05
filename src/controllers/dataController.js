@@ -7,33 +7,6 @@ const { generateToken } = require('./jwtUtils');
 const nodemailer = require('nodemailer');  
 const { v4: uuidv4 } = require('uuid');  
 
-//list all items
-exports.list = async (req, res) => {
-    try {
-        const data = await Data.find({});
-        res.json(data);
-    } catch (error) {
-        console.log(error);
-        res.status(200).send(error);
-        next();
-    }
-};
-
-exports.show = async (req, res, next) => {
-    try {
-        const data = await Data.findOne({ id: req.params.id });
-        if (!data) {
-            res.status(404).json({ message: "Message not found" });
-        }
-        res.json(data);
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: "Error" });
-        next();
-    }
-};
-
 exports.last = async (req, res) => {
     try {
         const data = await Data.find({}).sort({ createdAt: -1 }).limit(1);
@@ -89,53 +62,6 @@ function isDateValid(dateStr) {
         return true;
     } else {
         return false;
-    }
-};
-
-exports.add = async (req, res, next) => {
-    const { temperatura, humedad_relativa, CO2, VOC, intensidad_luminosa } = req.body;
-
-    const data = new Data({
-        temperatura: temperatura || 0,
-        humedad_relativa: humedad_relativa || 0,
-        CO2: CO2 || 0,
-        VOC: VOC || 0,
-        intensidad_luminosa: intensidad_luminosa || 0,
-    })
-
-    try {
-        await data.save();
-        res.json({ message: "Added new message", data: data });
-    } catch (error) {
-        console.log(error);
-        res.send(error);
-        next();
-    }
-};
-
-exports.update = async (req, res, next) => {
-    try {
-        const data = await Data.findOneAndUpdate(
-            { id: req.params.id }, req.body
-        );
-        res.json({ message: "Updated message", data: data });
-
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: "Error" });
-        next();
-    }
-
-};
-
-exports.delete = async (req, res, next) => {
-    try {
-        const data = await Data.findOneAndDelete({ id: req.params.id });
-        res.json({ message: "Deleted message", data: data });
-    } catch (error) {
-        console.log(error);
-        res.status(400).json({ message: "El mensaje no existe" });
-        next();
     }
 };
 
