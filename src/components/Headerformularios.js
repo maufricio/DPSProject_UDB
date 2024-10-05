@@ -34,7 +34,7 @@ const header= StyleSheet.create({
         flex:1,
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333',
+        color: 'white',
         marginLeft: 10,
     },
 
