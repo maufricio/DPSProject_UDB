@@ -23,8 +23,11 @@ const header= StyleSheet.create({
        alignItems:'center',
        justifyContent:'center',
         height:50,
-        marginTop:25,
-        backgroundColor: '#90CAF9',
+        marginTop:29,
+        backgroundColor: '#596bff',
+        //backgroundColor: '#009688',
+       // backgroundColor: '#00BCD4',
+        
       
     },
     title:{

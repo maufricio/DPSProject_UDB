@@ -1,4 +1,4 @@
-import { View, Text,TextInput,Button,Alert, StyleSheet, Image } from 'react-native'
+import { View, Text,TextInput,Button,Alert, StyleSheet, Image,ScrollView } from 'react-native'
 import React from 'react'
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -50,7 +50,7 @@ export default function VerificacionCorreo() {
 
   return (
     <View>
-      
+      <ScrollView>
       <Formik style={estilo.contenedor} 
     initialValues={{ email: '', code: '' }}
     validationSchema={validacion}
@@ -75,15 +75,16 @@ export default function VerificacionCorreo() {
                 onBlur={handleBlur('code')}
                 secureTextEntry/>
                  {errors.code && touched.code && (
-            <Text>{errors.code}</Text>
+            <Text style={estilo.error}>{errors.code}</Text>
           )}
 
           <CustomButton title="Verificar" onPress={handleSubmit} />
         </View>
       )}
     </Formik>
-
+    </ScrollView>
     </View>
+  
   )
 }
 
@@ -127,7 +128,7 @@ const estilo=StyleSheet.create({
     elevation: 2,
   
   },
-  caja:{marginTop:100,
+  caja:{marginTop:40,
     marginLeft: 15,
     marginRight:15,
     //backgroundColor: '#dddd',

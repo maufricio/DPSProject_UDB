@@ -1,4 +1,4 @@
-import { View, Text,TextInput,Button,Alert,Modal,TouchableOpacity,StyleSheet, Image } from 'react-native'
+import { View, Text,TextInput,Button,Alert,Modal,TouchableOpacity,StyleSheet, Image, ScrollView } from 'react-native'
 import React from 'react';
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -54,6 +54,7 @@ export default function RegistroUsuario() {
 }
       };
   return (
+    <ScrollView>
     <Formik  StyleSheet={estilo.contenedor}
     initialValues={{ name: '', email: '', password: '' }}
     validationSchema={validacion}
@@ -102,6 +103,8 @@ export default function RegistroUsuario() {
         </View>
       )}
     </Formik>
+    </ScrollView>
+
 
   )
 }
@@ -152,6 +155,7 @@ const estilo=StyleSheet.create({
     justifyContent: 'center',
     padding:20,
     borderRadius: 20,
+    
     
   },
   icono:{
