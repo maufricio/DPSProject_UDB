@@ -8,18 +8,19 @@ import axios from 'axios';
 import uri from "./Data";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from './BotonCustomizado'; // Asegúrate de que la ruta sea correcta
+import RNRestart from 'react-native-restart';
 
 const validacion = Yup.object().shape({
     email: Yup.string().email('debe ser un correo').required("Debe digitar su correo"),
     password: Yup.string().typeError("la contraseña debe ser una cadena de texto").required("Digite su contraseña"),
   });
 
-export default function InicioSesion() {
+export default function InicioSesion({setToken}) {
 
+  const ocultarTeclado = () => {
+    Keyboard.dismiss();
+  };
 
-    const ocultarTeclado = () => {
-        Keyboard.dismiss();
-      };
     const navigation = useNavigation();
         //para el dispositivo fisico
         const url_post = uri + '/login';
@@ -38,10 +39,10 @@ export default function InicioSesion() {
             });
             console.log(response);
             //Alert.alert('¡Éxito!',response.data.message);
-            Alert.alert('¡HAS INICIADO SESIÓN!' + response.data.token);
+            Alert.alert('Sesión iniciada', '¡Bienvenido a KALMP!');
             if(response.data.token){
                 await AsyncStorage.setItem('token', response.data.token);
-                navigation.navigate('Home1');
+                setToken(response.data.token);
             }
         } catch (error) {
         Alert.alert('¡ERROR!', error);
