@@ -37,7 +37,7 @@ router.delete('/api/deleteAllUsers', dataController.deleteAllUsers);
 
 
 //rutas para horarios
-router.get('/api/listschedule', validateToken, dataController.listshedules);
+router.get('/api/listschedule/:id', validateToken, dataController.listshedules);
 
 router.post('/api/addschedule', validateToken, dataController.addschedule);
 
@@ -46,7 +46,7 @@ router.put('/api/updateschedule/:id', validateToken, dataController.updateschedu
 router.delete('/api/deleteschedule/:id', validateToken, dataController.deleteschedule);
 
 //rutas para actividades
-router.get('/api/listactivity', validateToken, dataController.listsactivity);
+router.get('/api/listactivity/:id', validateToken, dataController.listsactivity);
 
 router.post('/api/addactivity', validateToken, dataController.addactivity);
 
