@@ -1,4 +1,6 @@
+import 'react-native-gesture-handler';
 import * as React from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 //import Home from './src/Home';
@@ -44,13 +46,18 @@ const App = () => {
       }
     }, [token]);
 
-    if(loading){
-      return null;
+    if (loading) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      );
     }
+    
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
+   
+      <NavigationContainer >
         {token ? (
           <Tab.Navigator>
             <Tab.Screen name="Home" options={{
@@ -78,10 +85,10 @@ const App = () => {
             }}/>
           </Tab.Navigator>
         ) : (
-                <Stackdatos initialRouteName="InicioSesion" setToken={setToken}/>
+        <Stackdatos initialRouteName="InicioSesion" setToken={setToken}/>
         )}
     </NavigationContainer>
-    </GestureHandlerRootView>
+   
   );
 }
 
