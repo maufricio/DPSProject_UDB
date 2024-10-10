@@ -1,5 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import RegistroUsuario from './components/RegistroUsuario';
 import VerificacionCorreo from './components/VerificacionCorreo';
@@ -16,36 +17,29 @@ export default function Stackdatos({initialRouteName, setToken}) {
     <Stack.Screen
       name="Registro Usuario"
       component={RegistroUsuario} 
-      options={{ header:()=><Headerformularios></Headerformularios>, headerShown: false, }}
+      options={{ header:()=><Headerformularios></Headerformularios>, headerLeft: () => null, }}
     />
 
     <Stack.Screen
     name="VerificacionCorreo"
     component={VerificacionCorreo} 
     options={{ header:()=><Headerformularios></Headerformularios>,
-      headerShown: false,   }}
+    headerLeft: () => null,   }}
     />
     
     <Stack.Screen
     name="Home1"
     component={Home} 
     options={{title:'Home',
-      headerShown: false, }}
+      headerLeft: () => null,headerBackTitleVisible: false, }}
+
     />
-    {/* <Stack.Screen
-    name="Home1"
-    options={{ title:'Home',
-    header: () => <Headerformularios />,
-    headerShown: false,
-    }}>
-      {props => <InicioSesion {...props} setToken={setToken} />}
-    </Stack.Screen>*/}
 
     <Stack.Screen
     name="InicioSesion"
     options={{
     header: () => <Headerformularios />,
-    headerShown: false,
+    headerLeft: () => null,
     }}>
       {props => <InicioSesion {...props} setToken={setToken} />}
     </Stack.Screen>
